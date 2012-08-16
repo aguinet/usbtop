@@ -1,0 +1,8 @@
+TODO list:
+----------
+
+ * do some math and tests in order to get accurate values
+ * try a signal/slot system in order to update the used GUI as soon as new
+   results can be computed (and check its performance)
+ * better console interface (use ncurses)
+ * make a Qt interface for fun :)
