@@ -1,5 +1,5 @@
-add_definitions("-std=c++11 -Wall -g -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64")
 
+add_definitions("-std=c++11 -Wall -g -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64")
 
 set(SRC_FILES
 buses.cpp
