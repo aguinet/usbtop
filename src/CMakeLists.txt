@@ -1,5 +1,11 @@
 include_directories(${BOOST_INCLUDEDIR} ${PCAP_INCLUDE_DIRS})
-add_definitions("-std=c++11 -Wall -g -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -fopenmp")
+add_definitions("-std=c++11 -Wall -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64")
+
+IF(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
+	add_definitions("-g")
+else()
+	add_definitions("-O3")
+endif()
 
 set(SRC_FILES
 buses.cpp
@@ -13,4 +19,4 @@ tools.cpp
 )
 
 add_executable(usbtop ${SRC_FILES})
-target_link_libraries(usbtop ${PCAP_LIBRARIES} ${Boost_LIBRARIES} -lgomp)
+target_link_libraries(usbtop ${PCAP_LIBRARIES} ${Boost_LIBRARIES})
