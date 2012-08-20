@@ -20,3 +20,5 @@ tools.cpp
 
 add_executable(usbtop ${SRC_FILES})
 target_link_libraries(usbtop ${PCAP_LIBRARIES} ${Boost_LIBRARIES})
+
+install(TARGETS usbtop DESTINATION bin)
