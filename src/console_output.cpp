@@ -44,7 +44,7 @@ void usbtop::ConsoleOutput::main()
 	std::cout.precision(2);
 	std::cout.setf(std::ios::fixed);
 	while (true) {
-		usleep(500*1000);
+		usleep(250*1000);
 		clear_screen();
 		print_stats();
 	}

@@ -45,9 +45,7 @@ void usbtop::UsbBus::push(const pcap_pkthdr* h, const u_char* bytes)
 {
 	// Get the packet size and timestamp
 	const size_t psize = h->len;
-	// AG: packet timestamp is in the future.. ?
-	//const double time = (double)h->ts.tv_sec + ((double)h->ts.tv_sec)/(1000000.0);
-	const double time = tools::get_current_timestamp();
+	const double time = (double)h->ts.tv_sec + ((double)h->ts.tv_usec)/(1000000.0);
 
 	if (psize <= 14) {
 		// That's a bad packet, discard it.
@@ -70,6 +68,7 @@ void usbtop::UsbBus::push(const pcap_pkthdr* h, const u_char* bytes)
 		return;
 	}
 	
+	//std::cerr << "Packet size: " << psize << std::endl;
 	_stats.push(time, psize, direction);
 	get_device(device_id).push(time, psize, direction);
 }

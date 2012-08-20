@@ -35,9 +35,6 @@
 
 // TODO: 
 //  * we need to do some real tests & math here to have accurate values.. !
-//  * that lock should disappear
-//  * for now, every GUI check values at a periodic time. We should have a signal/slot
-//    system (and check its performance...).
 
 double usbtop::Stats::_t0 = 0;
 
@@ -45,7 +42,9 @@ usbtop::Stats::Stats():
 	_nbytes(0),
 	_tN(0),
 	_nsamples(0),
-	_inst_data(LIVE_SAMPLE_COUNT)
+	_inst_data(LIVE_SAMPLE_COUNT),
+	_last_inst_bw(0.0),
+	_stats_window(1.0)
 {
 }
 
@@ -56,53 +55,65 @@ void usbtop::Stats::init()
 
 void usbtop::Stats::push(double timestamp, size_t spacket)
 {
-	_tN = timestamp;
 	_nsamples++;
 	_nbytes += spacket;
 
-	{
-		boost::unique_lock<boost::shared_mutex> lock(_access);
-		if (_inst_data.size() == LIVE_SAMPLE_COUNT) {
-			_inst_data.pop_front();
+	double first_ts = timestamp-_stats_window;
+
+	// Remove oldest samples
+	
+	_inst_data.push_back(sample_t(timestamp, spacket));
+
+	if (timestamp < _tN+0.2) {
+		return;
+	}
+
+	_tN = timestamp;
+
+	boost::circular_buffer<sample_t>::iterator it;
+	boost::circular_buffer<sample_t>::iterator it_last_rem;
+	bool to_rem = false;
+	for (it = _inst_data.begin(); it != _inst_data.end(); it++) {
+		if (it->first >= first_ts) {
+			break;
 		}
-		_inst_data.push_back(sample_t(timestamp, spacket));
+		to_rem = true;
+		it_last_rem = it;
+	}
+	if (to_rem) {
+		it_last_rem++;
+		_inst_data.erase(_inst_data.begin(), it_last_rem);
+	}
+	// Compute instant bw at this instant
+	size_t tsize = 0.0;
+	{
+		boost::circular_buffer<sample_t>::const_iterator it;
+		for (it = _inst_data.begin(); it != _inst_data.end(); it++) {
+			tsize += it->second;
+		}
+	}
+	const double first_ts_buf = _inst_data.front().first;
+	if (timestamp == first_ts_buf) {
+		_last_inst_bw = 0.0;
+	}
+	else {
+		_last_inst_bw = ((double)tsize)/(timestamp-first_ts_buf);
 	}
 }
 
 double usbtop::Stats::bw_instant() const
 {
-	if (_inst_data.size() < 2) {
-		return 0.0;
-	}
+	double last_ts_packet, last_inst_bw;
+	last_ts_packet = _tN;
+	last_inst_bw = _last_inst_bw;
 
-	// Get current timestamp
 	double cur_ts = tools::get_current_timestamp();
-	const double last_ts = _inst_data.back().first;
-	if (last_ts + 0.1 >= cur_ts) {
-		cur_ts = last_ts;
-	}
-	const double lower_ts = cur_ts-1.0;
-	double first_ts = 0.0;
-
-	size_t tsize = 0.0;
-	boost::circular_buffer<sample_t>::const_reverse_iterator it;
-	{
-		boost::shared_lock<boost::shared_mutex> lock(_access);
-		for (it = _inst_data.rbegin(); it != _inst_data.rend(); it++) {
-			if (it->first < lower_ts) {
-				break;
-			}
-			first_ts = it->first;
-			tsize += it->second;
-		}
-	}
-
-	// Our data is too old !
-	if (first_ts == 0.0) {
+	if (cur_ts >= last_ts_packet+_stats_window) {
+		// No packet in current window. Returns 0
 		return 0.0;
 	}
 
-	return (double)tsize/(cur_ts - first_ts);
+	return last_inst_bw;
 }
 
 double usbtop::Stats::bw_mean() const

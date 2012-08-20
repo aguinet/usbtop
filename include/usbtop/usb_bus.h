@@ -60,6 +60,14 @@ public:
 		}
 	}
 
+	UsbBus(UsbBus&& o):
+		_devices(std::move(o._devices)),
+		_bus_id(o._bus_id),
+		_name(std::move(o._name)),
+		_desc(std::move(o._desc)),
+		_stats(std::move(o._stats))
+	{ }
+
 	~UsbBus();
 
 public:

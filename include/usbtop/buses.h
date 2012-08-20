@@ -50,9 +50,9 @@ public:
 	{
 		size_t nfiltered = 0;
 		populate();
-		decltype(_buses)::const_iterator it;
+		decltype(_buses)::iterator it;
 		for (it = _buses.begin(); it != _buses.end(); it++) {
-			UsbBus* const bus = it->second;
+			UsbBus* bus = it->second;
 			if (!filter || (filter && bus->name() == filter)) {
 				nfiltered++;
 				f(bus);

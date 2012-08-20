@@ -46,6 +46,12 @@ class Stats: boost::noncopyable
 	typedef std::pair<double, size_t> sample_t;
 public:
 	Stats();
+	Stats(Stats&& o):
+		_nbytes(o._nbytes),
+		_tN(o._tN),
+		_nsamples(o._nsamples),
+		_inst_data(std::move(o._inst_data))
+	{ }
 
 public:
 	static void init();
@@ -67,6 +73,12 @@ private:
 
 	// Timestamp when the application is launched. Used as t0
 	static double _t0;
+
+	// Last "instantaneous" stats
+	double _last_inst_bw;
+
+	// Time window for statistics in seconds
+	double _stats_window;
 };
 
 class UsbStats: boost::noncopyable
@@ -77,6 +89,14 @@ public:
 		from_device = 0,
 		to_device
 	} direction_type;
+
+public:
+	UsbStats() { }
+
+	UsbStats(UsbStats&& o):
+		_from_device(std::move(o._from_device)),
+		_to_device(std::move(o._to_device))
+	{ }
 
 public:
 	inline void push(const double ts, const size_t size, const direction_type dir)
