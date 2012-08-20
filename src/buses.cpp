@@ -114,7 +114,7 @@ void usbtop::UsbBuses::add_bus(UsbBus::id_type bus_id, const char* name, const c
 
 usbtop::UsbBus* usbtop::UsbBuses::get_bus(UsbBus::id_type bus_id)
 {
-	decltype(_buses)::iterator it = _buses.find(bus_id);
+	list_buses_t::iterator it = _buses.find(bus_id);
 	if (it == _buses.end()) {
 		return NULL;
 	}

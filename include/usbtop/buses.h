@@ -38,6 +38,7 @@ namespace usbtop {
 class UsbBuses
 {
 	typedef void(*bus_func_t)(UsbBus::id_type bus_id, const char* name, const char* desc);
+	typedef std::map<UsbBus::id_type, UsbBus*> list_buses_t;
 
 public:
 	~UsbBuses();
@@ -50,7 +51,7 @@ public:
 	{
 		size_t nfiltered = 0;
 		populate();
-		decltype(_buses)::iterator it;
+		list_buses_t::iterator it;
 		for (it = _buses.begin(); it != _buses.end(); it++) {
 			UsbBus* bus = it->second;
 			if (!filter || (filter && bus->name() == filter)) {
@@ -81,7 +82,7 @@ private:
 	// map.emplace(key, UsbBus(...)), which involves a copy of the UsbBus object... (really usefull).
 	// The best would be to do:
 	// map.emplace(key, args_for_usb_bus)
-	static std::map<UsbBus::id_type, UsbBus*> _buses;
+	static list_buses_t _buses;
 };
 
 }
