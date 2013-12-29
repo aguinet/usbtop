@@ -33,6 +33,7 @@
 #include <usbtop/usb_device.h>
 #include <usbtop/usb_stats.h>
 #include <usbtop/console_output.h>
+#include <usbtop/should_stop.h>
 
 #include <iostream>
 #include <iomanip>
@@ -45,6 +46,9 @@ void usbtop::ConsoleOutput::main()
 	std::cout.setf(std::ios::fixed);
 	while (true) {
 		usleep(250*1000);
+		if (usbtop::ShouldStop::value()) {
+			break;
+		}
 		clear_screen();
 		print_stats();
 	}

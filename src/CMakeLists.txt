@@ -12,10 +12,11 @@ buses.cpp
 console_output.cpp
 main.cpp
 pcap_compat.cpp
+should_stop.cpp
+tools.cpp
 usb_bus.cpp
 usb_device.cpp
 usb_stats.cpp
-tools.cpp
 )
 
 add_executable(usbtop ${SRC_FILES})
