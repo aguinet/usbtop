@@ -47,11 +47,10 @@ bool usbtop::UsbBuses::_populated = false;
 
 usbtop::UsbBuses::~UsbBuses()
 {
-	/*
 	decltype(_buses)::const_iterator it;
 	for (it = _buses.begin(); it != _buses.end(); it++) {
 		delete it->second;
-	}*/
+	}
 }
 
 void usbtop::UsbBuses::list(bus_func_t f, const char* filter)
