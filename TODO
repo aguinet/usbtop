@@ -6,3 +6,4 @@ TODO list:
    results can be computed (and check its performance)
  * better console interface (use ncurses)
  * make a Qt interface for fun :)
+ * windows port
