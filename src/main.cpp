@@ -79,12 +79,6 @@ void pcap_loop_callback(u_char* user, const struct pcap_pkthdr *h, const u_char*
 	bus->push(h, bytes);
 }
 
-void pcap_usb_loop(pcap_t* hs, usbtop::UsbBus* bus)
-{
-	std::cerr << "Thread launched for bus " << bus->id() << std::endl;
-	pcap_loop(hs, 0, pcap_loop_callback, (u_char*) bus);
-}
-
 void clean_pcap_live(pcap_buses_t const& pcap_hs)
 {
 	for (pcap_bus const& pb: pcap_hs) {
