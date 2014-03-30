@@ -47,7 +47,7 @@ bool usbtop::UsbBuses::_populated = false;
 
 usbtop::UsbBuses::~UsbBuses()
 {
-	decltype(_buses)::const_iterator it;
+	list_buses_t::const_iterator it;
 	for (it = _buses.begin(); it != _buses.end(); it++) {
 		delete it->second;
 	}

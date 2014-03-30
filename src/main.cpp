@@ -41,6 +41,11 @@
 #include <usbtop/console_output.h>
 #include <usbtop/pcap_compat.h>
 #include <usbtop/should_stop.h>
+#include <usbtop/cxx_compat.h>
+
+#ifndef __STD_EMPLACE_SUPPORT
+#include <utility>
+#endif
 
 #include <boost/thread.hpp>
 
@@ -97,7 +102,11 @@ void pcap_usb_async_loop(pcap_buses_t const& pcap_hs)
 		if (fd > maxfd) {
 			maxfd = fd;
 		}
+#ifdef __STD_EMPLACE_SUPPORT
 		map_fd.emplace(fd, i);
+#else
+		map_fd.insert(std::make_pair(fd, i));
+#endif
 		FD_SET(fd, &fd_pcaps_org);
 	}
 
