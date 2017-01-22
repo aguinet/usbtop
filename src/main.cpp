@@ -223,6 +223,12 @@ int main(int argc, char** argv)
 		}
 	);
 
+	if (pcap_hs.size() == 0) {
+		std::cerr << "FATAL ERROR: couldn't open any USB buses with pcap. Did you load the usbmon module (sudo modprobe usbmon)?" << std::endl;
+		std::cerr << "You might also need to run this software as root." << std::endl;
+		return 1;
+	}
+
 	// Launch capturing thread
 	boost::thread capturing_th(boost::bind(pcap_usb_async_loop, pcap_hs));
 
