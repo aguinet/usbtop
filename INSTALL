@@ -8,7 +8,7 @@ Prerequisites:
 
  Under Debian, install these packages :
 
-  # aptitude install libboost-dev libpcap-dev
+  # aptitude install libboost-dev libpcap-dev libboost-thread-dev libboost-system-dev
 
 Compilation instructions:
 -------------------------
