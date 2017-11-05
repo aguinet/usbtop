@@ -63,7 +63,7 @@ void usbtop::UsbBus::push(const pcap_pkthdr* h, const u_char* bytes)
 	const uint8_t device_id = bytes[11];
 	const uint16_t bus_id = *((const uint16_t*) &bytes[12]);
 
-	if (bus_id != id()) {
+	if ((bus_id != id()) && id()) {
 		std::cerr << "[bad packet] on bus " << id() << ", captured a packet claimed to be on bus " << bus_id << "." << std::endl;
 		return;
 	}
