@@ -16,7 +16,7 @@ Compilation instructions:
 Create a '_build' directory and then use CMake to create the required Makefile's
 
  $ cd /path/to/usbtop
- $ mkdir _build
+ $ mkdir _build && cd _build
  $ cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Then, compile usbtop:
