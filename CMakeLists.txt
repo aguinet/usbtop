@@ -16,6 +16,6 @@ find_package(Boost COMPONENTS thread system)
 
 ##
 
-include_directories(include)
+include_directories(include ${PCAP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 
 add_subdirectory(src)
