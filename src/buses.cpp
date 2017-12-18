@@ -38,9 +38,13 @@
 
 #include <tuple>
 
+#if defined(__FreeBSD__)
+#define USB_DEVICE_START "usbus"
+#else
 #define USB_DEVICE_START "usbmon"
+#endif
 
-static size_t g_len_usb_dev_start = 5; // strlen(USB_DEVICE_START
+static size_t g_len_usb_dev_start = 5; // strlen(USB_DEVICE_START)
 
 std::map<usbtop::UsbBus::id_type, usbtop::UsbBus*> usbtop::UsbBuses::_buses;
 bool usbtop::UsbBuses::_populated = false;
