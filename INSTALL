@@ -23,6 +23,6 @@ Then, compile usbtop:
 
  $ make
 
-And install it to /usr/local/bin (as root) :
+And install it to /usr/local/bin (as root) and load kernel module (as root) :
 
- # make install
+ # make install && modprobe usbmon
