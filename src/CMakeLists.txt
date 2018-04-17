@@ -1,4 +1,4 @@
-include_directories(${BOOST_INCLUDEDIR} ${PCAP_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS} ${PCAP_INCLUDE_DIRS})
 add_definitions("-std=c++0x -Wall -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64")
 
 IF(CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][Bb][Uu][Gg]")
