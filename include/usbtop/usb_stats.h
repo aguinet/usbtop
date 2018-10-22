@@ -35,6 +35,7 @@
 #include <cstddef>
 
 #include <boost/circular_buffer.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/thread/shared_mutex.hpp>
 
 #define LIVE_SAMPLE_COUNT 128
