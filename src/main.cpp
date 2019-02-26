@@ -28,14 +28,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cstdlib>
 #include <errno.h>
 #include <getopt.h>
-#include <iostream>
-#include <pcap/pcap.h>
 #include <signal.h>
 #include <string.h>
 #include <strings.h>
+
+#include <cstdlib>
+#include <thread>
+#include <iostream>
+
+#include <pcap/pcap.h>
 
 #include <usbtop/buses.h>
 #include <usbtop/console_output.h>
@@ -46,8 +49,6 @@
 #ifndef __STD_EMPLACE_SUPPORT
 #include <utility>
 #endif
-
-#include <boost/thread.hpp>
 
 #include <vector>
 
@@ -160,7 +161,7 @@ int main(int argc, char** argv)
 		{0, 0, 0, 0}
 	};
 
-	char* bus_filter = NULL;
+  std::unique_ptr<char, decltype(free)*> bus_filter(nullptr, &free); 
 	int longindex;
 	while (1)
 	{
@@ -170,7 +171,7 @@ int main(int argc, char** argv)
 		switch (opt)
 		{
 		case 'b':
-			bus_filter = strdup(optarg);
+			bus_filter.reset(strdup(optarg));
 			break;
 		case '?':
 			std::cerr << "Unrecognized option : " << argv[optind-1] << std::endl;
@@ -180,8 +181,7 @@ int main(int argc, char** argv)
 	}
 
 	if (show_list) {
-		usbtop::UsbBuses::show(bus_filter);
-		if (bus_filter) free(bus_filter);
+		usbtop::UsbBuses::show(bus_filter.get());
 		return 0;
 	}
 
@@ -192,10 +192,9 @@ int main(int argc, char** argv)
 	signal(SIGKILL, &quit_handler);
 
 	// Populate USB buses
-	usbtop::UsbBuses::populate(bus_filter);
+	usbtop::UsbBuses::populate(bus_filter.get());
 	if (usbtop::UsbBuses::size() == 0) {
 		std::cerr << "No USB bus can be captured thanks to libpcap. Check your name filter and make sure relevent permissions are set !" << std::endl;
-		if (bus_filter) free(bus_filter);
 		return 1;
 	}
 
@@ -230,7 +229,7 @@ int main(int argc, char** argv)
 	}
 
 	// Launch capturing thread
-	boost::thread capturing_th(boost::bind(pcap_usb_async_loop, pcap_hs));
+	std::thread capturing_th(std::bind(pcap_usb_async_loop, pcap_hs));
 
 	// Current thread will output on the main console
 	usbtop::ConsoleOutput::main();
@@ -239,10 +238,6 @@ int main(int argc, char** argv)
 	capturing_th.join();
 
 	clean_pcap_live(pcap_hs);
-
-	if (bus_filter) {
-		free(bus_filter);
-	}
 
 	return 0;
 }
