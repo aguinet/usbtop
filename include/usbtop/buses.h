@@ -38,10 +38,7 @@ namespace usbtop {
 class UsbBuses
 {
 	typedef void(*bus_func_t)(UsbBus::id_type bus_id, const char* name, const char* desc);
-	typedef std::map<UsbBus::id_type, UsbBus*> list_buses_t;
-
-public:
-	~UsbBuses();
+	typedef std::map<UsbBus::id_type, UsbBus> list_buses_t;
 
 public:
 	static void list(bus_func_t f, const char* filter);
@@ -53,7 +50,7 @@ public:
 		populate();
 		list_buses_t::iterator it;
 		for (it = _buses.begin(); it != _buses.end(); it++) {
-			UsbBus* bus = it->second;
+			UsbBus* bus = &it->second;
 			if (!filter || (filter && bus->name() == filter)) {
 				nfiltered++;
 				f(bus);
@@ -73,15 +70,6 @@ private:
 	static bool _populated;
 
 private:
-	// AG: ideally, we shouldn't store a pointer into this std::map,
-	// because "emplace" can be use to create non-copyable object into
-	// a container.
-	// Two issues here: std::map::emplace isn't implemented in libstdc++
-	// (as of August 2012), and, even with std::unordered_map, the only
-	// supported syntax is :
-	// map.emplace(key, UsbBus(...)), which involves a copy of the UsbBus object... (really usefull).
-	// The best would be to do:
-	// map.emplace(key, args_for_usb_bus)
 	static list_buses_t _buses;
 };
 
