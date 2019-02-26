@@ -22,6 +22,8 @@ Usage
 Please refer to the INSTALL file for installation instructions.
 Then, you need to have the "usbmon" module loaded. As root, do :
 
- # modprobe usbmon
+```
+# modprobe usbmon
+```
 
 Moreover, on some distributions, usbtop need to be run as root !
