@@ -45,3 +45,8 @@ And install it to /usr/local/bin (as root) and load kernel module (as root) :
 ```
 # make install && modprobe usbmon
 ```
+
+There are also more detailed instructions for Ubuntu on this stack overflow
+questionn :
+https://unix.stackexchange.com/questions/10671/usb-performance-traffic-monitor/489268#489268
+(by https://github.com/ElectricRCAircraftGuy).
