@@ -35,8 +35,6 @@
 #include <cstddef>
 
 #include <boost/circular_buffer.hpp>
-#include <boost/noncopyable.hpp>
-#include <boost/thread/shared_mutex.hpp>
 
 #define LIVE_SAMPLE_COUNT 128
 
@@ -48,10 +46,10 @@ class Stats: boost::noncopyable
 public:
 	Stats();
 	Stats(Stats&& o):
-		_nbytes(o._nbytes),
-		_tN(o._tN),
-		_nsamples(o._nsamples),
-		_inst_data(std::move(o._inst_data))
+		nbytes_(o.nbytes_),
+		tN_(o.tN_),
+		nsamples_(o.nsamples_),
+		inst_data_(std::move(o.inst_data_))
 	{ }
 
 public:
@@ -64,22 +62,21 @@ public:
 
 private:
 	// Global stats
-	size_t _nbytes;
-	double _tN;
-	size_t _nsamples;
+	size_t nbytes_;
+	double tN_;
+	size_t nsamples_;
 
 	// "Instantaneous" stats
-	boost::circular_buffer<sample_t> _inst_data;
-	mutable boost::shared_mutex _access;
+	boost::circular_buffer<sample_t> inst_data_;
 
 	// Timestamp when the application is launched. Used as t0
-	static double _t0;
+	static double t0_;
 
 	// Last "instantaneous" stats
-	double _last_inst_bw;
+	double last_inst_bw_;
 
 	// Time window for statistics in seconds
-	double _stats_window;
+	double stats_window_;
 };
 
 class UsbStats: boost::noncopyable

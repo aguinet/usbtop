@@ -8,7 +8,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 # PCAP
 find_package(PCAP REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread)
 
 include_directories(include)
 

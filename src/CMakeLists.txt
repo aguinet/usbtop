@@ -14,6 +14,6 @@ usb_stats.cpp
 )
 
 add_executable(usbtop ${SRC_FILES})
-target_link_libraries(usbtop ${PCAP_LIBRARIES} Boost::thread) 
+target_link_libraries(usbtop ${PCAP_LIBRARIES} pthread)
 
 install(TARGETS usbtop DESTINATION sbin)

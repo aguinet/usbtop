@@ -36,44 +36,44 @@
 // TODO: 
 //  * we need to do some real tests & math here to have accurate values.. !
 
-double usbtop::Stats::_t0 = 0;
+double usbtop::Stats::t0_ = 0;
 
 usbtop::Stats::Stats():
-	_nbytes(0),
-	_tN(0),
-	_nsamples(0),
-	_inst_data(LIVE_SAMPLE_COUNT),
-	_last_inst_bw(0.0),
-	_stats_window(1.0)
+	nbytes_(0),
+	tN_(0),
+	nsamples_(0),
+	inst_data_(LIVE_SAMPLE_COUNT),
+	last_inst_bw_(0.0),
+	stats_window_(1.0)
 {
 }
 
 void usbtop::Stats::init()
 {
-	_t0 = usbtop::tools::get_current_timestamp();
+	t0_ = usbtop::tools::get_current_timestamp();
 }
 
 void usbtop::Stats::push(double timestamp, size_t spacket)
 {
-	_nsamples++;
-	_nbytes += spacket;
+	nsamples_++;
+	nbytes_ += spacket;
 
-	double first_ts = timestamp-_stats_window;
+	double first_ts = timestamp-stats_window_;
 
 	// Remove oldest samples
 	
-	_inst_data.push_back(sample_t(timestamp, spacket));
+	inst_data_.push_back(sample_t(timestamp, spacket));
 
-	if (timestamp < _tN+0.2) {
+	if (timestamp < tN_+0.2) {
 		return;
 	}
 
-	_tN = timestamp;
+	tN_ = timestamp;
 
 	boost::circular_buffer<sample_t>::iterator it;
 	boost::circular_buffer<sample_t>::iterator it_last_rem;
 	bool to_rem = false;
-	for (it = _inst_data.begin(); it != _inst_data.end(); it++) {
+	for (it = inst_data_.begin(); it != inst_data_.end(); it++) {
 		if (it->first >= first_ts) {
 			break;
 		}
@@ -82,33 +82,33 @@ void usbtop::Stats::push(double timestamp, size_t spacket)
 	}
 	if (to_rem) {
 		it_last_rem++;
-		_inst_data.erase(_inst_data.begin(), it_last_rem);
+		inst_data_.erase(inst_data_.begin(), it_last_rem);
 	}
 	// Compute instant bw at this instant
 	size_t tsize = 0.0;
 	{
 		boost::circular_buffer<sample_t>::const_iterator it;
-		for (it = _inst_data.begin(); it != _inst_data.end(); it++) {
+		for (it = inst_data_.begin(); it != inst_data_.end(); it++) {
 			tsize += it->second;
 		}
 	}
-	const double first_ts_buf = _inst_data.front().first;
+	const double first_ts_buf = inst_data_.front().first;
 	if (timestamp == first_ts_buf) {
-		_last_inst_bw = 0.0;
+		last_inst_bw_ = 0.0;
 	}
 	else {
-		_last_inst_bw = ((double)tsize)/(timestamp-first_ts_buf);
+		last_inst_bw_ = ((double)tsize)/(timestamp-first_ts_buf);
 	}
 }
 
 double usbtop::Stats::bw_instant() const
 {
 	double last_ts_packet, last_inst_bw;
-	last_ts_packet = _tN;
-	last_inst_bw = _last_inst_bw;
+	last_ts_packet = tN_;
+	last_inst_bw = last_inst_bw_;
 
 	double cur_ts = tools::get_current_timestamp();
-	if (cur_ts >= last_ts_packet+_stats_window) {
+	if (cur_ts >= last_ts_packet+stats_window_) {
 		// No packet in current window. Returns 0
 		return 0.0;
 	}
@@ -118,5 +118,5 @@ double usbtop::Stats::bw_instant() const
 
 double usbtop::Stats::bw_mean() const
 {
-	return (double)_nbytes/(_tN-_t0);
+	return (double)nbytes_/(tN_-t0_);
 }

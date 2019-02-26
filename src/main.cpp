@@ -37,6 +37,7 @@
 #include <cstdlib>
 #include <thread>
 #include <iostream>
+#include <functional>
 
 #include <pcap/pcap.h>
 
