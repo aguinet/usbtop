@@ -60,8 +60,6 @@ void usbtop::Stats::push(double timestamp, size_t spacket)
 
 	double first_ts = timestamp-stats_window_;
 
-	// Remove oldest samples
-	
 	inst_data_.push_back(sample_t(timestamp, spacket));
 
 	if (timestamp < tN_+0.2) {
