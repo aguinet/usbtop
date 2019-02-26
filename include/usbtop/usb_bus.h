@@ -42,7 +42,7 @@
 
 namespace usbtop {
 
-class UsbBus: boost::noncopyable
+class UsbBus
 {
 public:
 	typedef size_t id_type;
@@ -67,6 +67,8 @@ public:
 		_desc(std::move(o._desc)),
 		_stats(std::move(o._stats))
 	{ }
+
+  UsbBus(UsbBus const&) = delete;
 
 	~UsbBus();
 

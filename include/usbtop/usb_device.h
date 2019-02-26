@@ -38,7 +38,7 @@ namespace usbtop {
 
 class UsbBus;
 
-class UsbDevice: boost::noncopyable
+class UsbDevice
 {
 	friend class UsbBus;
 
@@ -56,6 +56,8 @@ protected:
 		_stats(std::move(o._stats)),
 		_bus(o._bus)
 	{ }
+
+  UsbDevice(UsbDevice const&) = delete;
 
 public:
 	void push(const double ts, const size_t size, const UsbStats::direction_type dir);

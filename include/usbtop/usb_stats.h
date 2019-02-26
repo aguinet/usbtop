@@ -40,7 +40,7 @@
 
 namespace usbtop {
 
-class Stats: boost::noncopyable
+class Stats
 {
 	typedef std::pair<double, size_t> sample_t;
 public:
@@ -51,6 +51,8 @@ public:
 		nsamples_(o.nsamples_),
 		inst_data_(std::move(o.inst_data_))
 	{ }
+
+	Stats(Stats const& o) = delete;
 
 public:
 	static void init();
@@ -79,7 +81,7 @@ private:
 	double stats_window_;
 };
 
-class UsbStats: boost::noncopyable
+class UsbStats
 {
 public:
 	// The order of this enum is important !! (cf. UsbBus::push)
@@ -95,6 +97,8 @@ public:
 		_from_device(std::move(o._from_device)),
 		_to_device(std::move(o._to_device))
 	{ }
+
+  UsbStats(UsbStats const&) = delete;
 
 public:
 	inline void push(const double ts, const size_t size, const direction_type dir)
