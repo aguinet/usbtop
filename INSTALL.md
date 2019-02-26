@@ -21,7 +21,7 @@ From sources
 Under Debian, install these packages :
 
 ```
-$ sudo apt install libboost-dev libpcap-dev libboost-thread-dev libboost-system-dev
+$ sudo apt install libboost-dev libpcap-dev
 ```
 
 ### Compilation instructions:

@@ -8,7 +8,7 @@ USB buses and devices.
 Project status
 --------------
 
-Current stable release is 0.2 (tag release-0.2).
+Current stable release is 1.0 (tag release-1.0).
 
 The project is stable and has been tested on debian systems. It should work on all different flavors of Linux though.
 Do not hesitate to report any issue you would have while trying to compile and run usbtop.

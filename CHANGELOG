@@ -1,0 +1,17 @@
+1.0
+---
+
+* Add support for FreeBSD (thanks to https://github.com/yurivict !)
+* Clean old code to proper C++11
+* Remove boost::thread and system dependency (use C++11 thread support)
+* Add headers for boost::circular_buffer if boost isn't found on the system.
+
+0.2
+---
+
+Bug fix release
+
+0.1
+---
+
+Initial release
