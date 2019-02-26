@@ -38,7 +38,11 @@
 
 #include <tuple>
 
+#if defined(__FreeBSD__)
+#define USB_DEVICE_START "usbus"
+#else
 #define USB_DEVICE_START "usbmon"
+#endif
 
 static size_t g_len_usb_dev_start = strlen(USB_DEVICE_START);
 
