@@ -77,6 +77,6 @@ void usbtop::ConsoleOutput::print_stats_bus(UsbBus const& bus)
 		std::cout << "  Device ID " << it->first << " :\t";
 		double stats_to = stats.stats_to_device().bw_instant()/1024.0;
 		double stats_from = stats.stats_from_device().bw_instant()/1024.0;
-		std::cout << "\t\t" << stats_to << " KB/s\t" << stats_from << " kb/s" << std::endl;
+		std::cout << "\t\t" << stats_to << " KiB/s\t" << stats_from << " KiB/s" << std::endl;
 	}
 }
