@@ -7,7 +7,7 @@ Packages
 Under some Debian-based system, you can directly install the usbtop package:
 
 ```
-$ sudo apt install ubstop
+$ sudo apt install usbtop
 ```
 
 From sources
