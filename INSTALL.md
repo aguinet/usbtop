@@ -4,11 +4,15 @@ usbtop: installation instructions
 Packages
 --------
 
-Under some Debian-based system, you can directly install the usbtop package:
+Under some distributions, you can directly install the usbtop package:
 
 ```
 $ sudo apt install usbtop
 ```
+```
+$ sudo dnf install usbtop
+```
+
 
 From sources
 ------------
