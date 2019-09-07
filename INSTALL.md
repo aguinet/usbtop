@@ -4,11 +4,16 @@ usbtop: installation instructions
 Packages
 --------
 
-Under some distributions, you can directly install the usbtop package:
+Under some Linux distributions, usbtop is directly packaged.
+
+To install under Debian-based distributions:
 
 ```
 $ sudo apt install usbtop
 ```
+
+To install under Fedora:
+
 ```
 $ sudo dnf install usbtop
 ```
