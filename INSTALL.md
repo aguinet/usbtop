@@ -8,6 +8,7 @@ Under some Linux distributions, usbtop is directly packaged.
 
 To install under Debian-based distributions:
 
+For ubuntu 20.04, 21.04, 21.10 and 22.04.
 ```
 $ sudo apt install usbtop
 ```
